@@ -1,0 +1,59 @@
+# Python
+*.pyc
+*.pyo
+__pycache__/
+*.pyd
+*.pyo
+*.pdb
+
+# Django
+*.log
+db.sqlite3
+.env
+
+# Environment and IDEs
+.env/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Byte-compiled files and caches
+__pycache__/
+*.py[cod]
+
+# Docker
+*.env
+docker-compose.override.yml
+.dockerignore
+.venv
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+.nox/
+
+# Test and deployment
+*.pid
+celerybeat-schedule
+*.pytest_cache
+
+# Build and distribution
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+
+# Static files
+staticfiles/
+media/
+node_modules/
+
+# Local settings
+local_settings.py
