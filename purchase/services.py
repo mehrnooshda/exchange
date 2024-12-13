@@ -2,8 +2,16 @@ from threading import Lock
 
 
 class PurchaseService:
+    SUPPORTED_COINS = {
+        'BTC': 10,  # Bitcoin
+        'ETH': 4,  # Ethereum
+        'XRP': 1,  # Ripple
+        'ADA': 2,  # Cardano
+        'LTC': 3  # Litecoin
+    }
+
     def __init__(self):
-        self.aggregate_purchases = {}
+        self.aggregate_purchases = {coin: 0 for coin in self.SUPPORTED_COINS}
         self.lock = Lock()
 
     def buy_from_exchange(self, total_quantity, coin_name):
@@ -11,21 +19,23 @@ class PurchaseService:
         return True
 
     def handle_purchase(self, user, coin_name, quantity):
-        COIN_PRICE = 4 # for simplicity every coin costs 4 dollars!
-        total_price = quantity * COIN_PRICE
+        if coin_name not in self.SUPPORTED_COINS:
+            raise ValueError(
+                f"Coin '{coin_name}' is not available. Please choose from: {', '.join(self.SUPPORTED_COINS.keys())}")
+
+        coin_price = self.SUPPORTED_COINS[coin_name]
+        total_price = quantity * coin_price
 
         if user.balance < total_price:
-            raise Exception("Insufficient balance")
+            raise ValueError("Insufficient balance to complete this transaction.")
 
         user.balance -= total_price
         user.save()
 
         with self.lock:
-            if coin_name not in self.aggregate_purchases:
-                self.aggregate_purchases[coin_name] = 0
             self.aggregate_purchases[coin_name] += quantity
 
-            if self.aggregate_purchases[coin_name] * COIN_PRICE >= 10:
+            if self.aggregate_purchases[coin_name] * coin_price >= 10:
                 total_quantity = self.aggregate_purchases[coin_name]
                 self.buy_from_exchange(total_quantity, coin_name)
-                self.aggregate_purchases[coin_name] = 0  # reset the aggregate
+                self.aggregate_purchases[coin_name] = 0  # Reset the aggregate
