@@ -83,7 +83,11 @@ docker run -p 8000:8000 crypto_purchase_platform
 ```
 The application should now be accessible at http://127.0.0.1:8000/.
 
-
+The instructions in readme are complete for building the docker image and run it on a preinstalled ubuntu server (and I suggest to use them to build docker image)
+But in case of any issue you can also pull the image via Docker-hub:
+```bash
+docker pull mehrnooshda/app
+```
 
 
 ## API Endpoints
