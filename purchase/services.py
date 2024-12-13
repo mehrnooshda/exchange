@@ -2,8 +2,6 @@ from threading import Lock
 from decimal import Decimal
 
 class PurchaseService:
-
-    # Validate the coin
     SUPPORTED_COINS = {
         'BTC': Decimal('10'),
         'ETH': Decimal('4'),
