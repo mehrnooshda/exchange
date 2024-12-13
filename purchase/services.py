@@ -1,15 +1,16 @@
 from threading import Lock
-
+from decimal import Decimal
 
 class PurchaseService:
-    SUPPORTED_COINS = {
-        'BTC': 10,  # Bitcoin
-        'ETH': 4,  # Ethereum
-        'XRP': 1,  # Ripple
-        'ADA': 2,  # Cardano
-        'LTC': 3  # Litecoin
-    }
 
+    # Validate the coin
+    SUPPORTED_COINS = {
+        'BTC': Decimal('10'),
+        'ETH': Decimal('4'),
+        'XRP': Decimal('1'),
+        'ADA': Decimal('2'),
+        'LTC': Decimal('3')
+    }
     def __init__(self):
         self.aggregate_purchases = {coin: 0 for coin in self.SUPPORTED_COINS}
         self.lock = Lock()
@@ -19,13 +20,14 @@ class PurchaseService:
         return True
 
     def handle_purchase(self, user, coin_name, quantity):
+        quantity = Decimal(quantity)
+
         if coin_name not in self.SUPPORTED_COINS:
             raise ValueError(
                 f"Coin '{coin_name}' is not available. Please choose from: {', '.join(self.SUPPORTED_COINS.keys())}")
 
         coin_price = self.SUPPORTED_COINS[coin_name]
-        total_price = quantity * coin_price
-
+        total_price = quantity * Decimal(coin_price)
         if user.balance < total_price:
             raise ValueError("Insufficient balance to complete this transaction.")
 
